@@ -28,8 +28,8 @@ export default {
   },
   async created() {
     const client = createClient({
-      space: process.env.VUE_APP_CONTENTFUL_SPACE_ID,
-      accessToken: process.env.VUE_APP_CONTENTFUL_ACCESS_TOKEN,
+      space: import.meta.env.VITE_CONTENTFUL_SPACE_ID,
+      accessToken: import.meta.env.VITE_CONTENTFUL_ACCESS_TOKEN,
     })
 
     try {
