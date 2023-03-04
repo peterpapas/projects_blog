@@ -87,7 +87,10 @@ export default {
 }
 
 .blog-post-image-container {
-  height: 300px;
+  /* height: 300px; */
+  -o-object-fit: cover;
+  object-fit: cover;
+  min-height: 150px;
   overflow: hidden;
   margin-bottom: 20px;
   border-radius: 8px;
@@ -103,7 +106,7 @@ export default {
 }
 
 .blog-post-body-container {
-  
+
   overflow-x: hidden;
   display: flex;
   justify-content: center;
@@ -126,6 +129,6 @@ export default {
 .blog-post-date {
   font-size: 16px;
   color: #999;
-   font-family: 'Source Sans Pro', sans-serif;
+  font-family: 'Source Sans Pro', sans-serif;
 }
 </style>
