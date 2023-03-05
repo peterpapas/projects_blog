@@ -1,37 +1,45 @@
+<!-- TODO ADD PAGE LOADER WHEN DATA IS NOT FETCHED  -->
+
+
+
 <template>
   <div class="main-container">
     <div class="header">
       <h1 class="blog-title" style="color: #333333">👇⬇️ ✨Current
         Projects✨ ⬇️👇</h1>
     </div>
-    <div class="blog-container">
+    <div v-if="!loading" class="blog-container">
 
       <div v-for="post in posts" :key="post.slug" class="blog-post" @click="navigateToSinglePost(post.slug)">
         <div class="list-card">
           <div class="post">
             <img :src="getHeroImage(post)" alt="Hero Image" class="post-image" />
-            <div class="post-body">
-              <div class="post-main">
+          <div class="post-body">
+            <div class="post-main">
                 <h4 class="title">{{ post.title }}</h4>
                 <!-- <p class="blog-post-description" style="color: #777777">
-                  {{ post.description }}
-                </p> -->
+                                              {{ post.description }}
+                                            </p> -->
 
-                <div class="line"></div>
+              <div class="line"></div>
 
-              </div>
-              <!-- <div class="post-meta">
+            </div>
+            <!-- <div class="post-meta">
                 <div class="post-info">
                   <div class="post-info-text">
-                    <p class="post-date">{{ formatDate(post.publishDate) }}</p>
-                  </div>
-                </div>
-              </div> -->
+                                              <p class="post-date">{{ formatDate(post.publishDate) }}</p>
+                                            </div>
+                                            </div>
+                                          </div> -->
             </div>
           </div>
         </div>
 
       </div>
+    </div>
+    <div v-else class="loading">
+      <div class="loader"></div>
+      <p class="loading-message">🐞 It's not a bug it's a feature! 🐞</p>
     </div>
   </div>
 </template>
@@ -43,6 +51,7 @@ export default {
   name: "Blog",
   data() {
     return {
+      loading: true,
       posts: [],
       heroImage: null,
     };
@@ -71,6 +80,10 @@ export default {
     });
 
     this.posts = await Promise.all(this.posts);
+
+    if (this.posts.length > 0) {
+      this.loading = false;
+    }
   },
   methods: {
     formatDate(date) {
@@ -277,6 +290,51 @@ export default {
   font-size: 16px;
   font-family: "Source Sans Pro", sans-serif;
   color: #6c757d;
+}
+
+/* Loading */
+
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.loader {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 8px solid transparent;
+  border-top: 8px solid #8ac6d1;
+  background-image: linear-gradient(to bottom right, #8ac6d1, #eef2f3);
+  animation: spin 0.8s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite;
+}
+
+.loading-message {
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  text-align: center;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(180deg) scale(0.8);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>
 
