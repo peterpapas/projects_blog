@@ -18,8 +18,8 @@
             <div class="post-main">
                 <h4 class="title">{{ post.title }}</h4>
                 <!-- <p class="blog-post-description" style="color: #777777">
-                                              {{ post.description }}
-                                            </p> -->
+                                                                                                    {{ post.description }}
+                                                                                                  </p> -->
 
               <div class="line"></div>
 
@@ -27,10 +27,10 @@
             <!-- <div class="post-meta">
                 <div class="post-info">
                   <div class="post-info-text">
-                                              <p class="post-date">{{ formatDate(post.publishDate) }}</p>
-                                            </div>
-                                            </div>
-                                          </div> -->
+                                                                                                    <p class="post-date">{{ formatDate(post.publishDate) }}</p>
+                                                                                                  </div>
+                                                                                                  </div>
+                                                                                                </div> -->
             </div>
           </div>
         </div>
@@ -38,8 +38,41 @@
       </div>
     </div>
     <div v-else class="loading">
-      <div class="loader"></div>
-      <p class="loading-message">🐞 It's not a bug it's a feature! 🐞</p>
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="  display: block;"
+        width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+        <g>
+          <circle cx="60" cy="50" r="4" fill="#1e4eac">
+            <animate attributeName="cx" repeatCount="indefinite" dur="1s" values="95;35" keyTimes="0;1" begin="-0.67s">
+            </animate>
+            <animate attributeName="fill-opacity" repeatCount="indefinite" dur="1s" values="0;1;1" keyTimes="0;0.2;1"
+              begin="-0.67s"></animate>
+          </circle>
+          <circle cx="60" cy="50" r="4" fill="#1e4eac">
+            <animate attributeName="cx" repeatCount="indefinite" dur="1s" values="95;35" keyTimes="0;1" begin="-0.33s">
+            </animate>
+            <animate attributeName="fill-opacity" repeatCount="indefinite" dur="1s" values="0;1;1" keyTimes="0;0.2;1"
+              begin="-0.33s"></animate>
+          </circle>
+          <circle cx="60" cy="50" r="4" fill="#1e4eac">
+            <animate attributeName="cx" repeatCount="indefinite" dur="1s" values="95;35" keyTimes="0;1" begin="0s">
+            </animate>
+            <animate attributeName="fill-opacity" repeatCount="indefinite" dur="1s" values="0;1;1" keyTimes="0;0.2;1"
+              begin="0s"></animate>
+          </circle>
+        </g>
+        <g transform="translate(-15 0)">
+          <path d="M50 50L20 50A30 30 0 0 0 80 50Z" fill="#61f711" transform="rotate(90 50 50)"></path>
+          <path d="M50 50L20 50A30 30 0 0 0 80 50Z" fill="#61f711">
+            <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s"
+              values="0 50 50;45 50 50;0 50 50" keyTimes="0;0.5;1"></animateTransform>
+          </path>
+          <path d="M50 50L20 50A30 30 0 0 1 80 50Z" fill="#61f711">
+            <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s"
+              values="0 50 50;-45 50 50;0 50 50" keyTimes="0;0.5;1"></animateTransform>
+          </path>
+        </g>
+      </svg>
+      <p class="loading-message">{{ randomMessage }}</p>
     </div>
   </div>
 </template>
@@ -52,9 +85,32 @@ export default {
   data() {
     return {
       loading: true,
+      messages: [
+        "It's not a bug it's a feature! 🐛💡🐞",
+        "Give me a second to think... 🤔⏰",
+        "I'm fetching the data... 🚚💻",
+        "Holding on tight, almost there... 🤞🏼🔜",
+        "Do you like this loading message? 💬🤔",
+        "The data is on its way... 📶👀",
+        "Let's wait and see... ⏳👀",
+        "Working on it... 👨‍💻🔨",
+        "Is it done yet? 🤔❓",
+        "Patience is a virtue... 😌🙏",
+      ],
       posts: [],
       heroImage: null,
     };
+  },
+  computed: {
+    randomMessage() {
+      return this.messages[Math.floor(Math.random() * this.messages.length)];
+    },
+  },
+  created() {
+    // Simulate a delay before the data is loaded
+    setTimeout(() => {
+      this.loading = false;
+    }, 3000);
   },
   async created() {
     const client = createClient({
@@ -301,40 +357,18 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  background-color: #f2f2f2;
 }
 
-.loader {
-  display: inline-block;
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  border: 8px solid transparent;
-  border-top: 8px solid #8ac6d1;
-  background-image: linear-gradient(to bottom right, #8ac6d1, #eef2f3);
-  animation: spin 0.8s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite;
-}
+
 
 .loading-message {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   margin-top: 1rem;
   text-align: center;
   font-family: "Source Sans Pro", sans-serif;
   font-size: 20px;
   font-weight: 400;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  50% {
-    transform: rotate(180deg) scale(0.8);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
 }
 </style>
 
@@ -370,8 +404,37 @@ export default {
   transition: width 0.3s ease-in-out;
 }
 
+OLD LOADER
+
+<!-- <div class="loader"></div> -->
+
 .learn-more:hover::before {
   width: 100%;
-} */
+} 
 
-/*  */
+.loader {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 8px solid transparent;
+  border-top: 8px solid #8ac6d1;
+  background-image: linear-gradient(to bottom right, #8ac6d1, #eef2f3);
+  animation: spin 0.8s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(180deg) scale(0.8);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
