@@ -18,8 +18,8 @@
             <div class="post-main">
                 <h4 class="title">{{ post.title }}</h4>
                 <!-- <p class="blog-post-description" style="color: #777777">
-                                                                                                    {{ post.description }}
-                                                                                                  </p> -->
+                                                                                                      {{ post.description }}
+                                                                                                    </p> -->
 
               <div class="line"></div>
 
@@ -27,10 +27,10 @@
             <!-- <div class="post-meta">
                 <div class="post-info">
                   <div class="post-info-text">
-                                                                                                    <p class="post-date">{{ formatDate(post.publishDate) }}</p>
-                                                                                                  </div>
-                                                                                                  </div>
-                                                                                                </div> -->
+                                                                                                      <p class="post-date">{{ formatDate(post.publishDate) }}</p>
+                                                                                                    </div>
+                                                                                                    </div>
+                                                                                                  </div> -->
             </div>
           </div>
         </div>
@@ -130,7 +130,7 @@ export default {
         slug: item.fields.slug,
         image: heroImageUrl,
         description: item.fields.description,
-        body: item.fields.body.slice(0, 50),
+        // body: item.fields.body.slice(0, 50),
         publishDate: item.fields.publishDate,
       };
     });
