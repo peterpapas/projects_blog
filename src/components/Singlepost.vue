@@ -1,16 +1,31 @@
 <!-- TODO STYLE THIS COMPONENT  -->
 
 <template>
-  <div v-if="!loading" class="blog-post">
-    <h2 class="blog-post-title">{{ post.title }}</h2>
-    <div class="blog-post-image-container">
-      <!-- <img :src="post.image.link" :alt="post.image.title" class="blog-post-image"> -->
-      <img :src="heroImage" alt="Hero Image" class="blog-post-image">
-    </div>
-    <p class="blog-post-description">{{ post.description }}</p>
-    <div v-html="renderedBody" class="blog-post-body"></div>
-    <p class="blog-post-date">{{ formatDate(post.publishDate) }}</p>
+  <div class="back-button-container">
+    <router-link to="/" class="back-button">Back</router-link>
   </div>
+  <div class="dark-mode-buton-container">
+    <div class="back-button" @click="toggleDarkMode">
+      <span v-if="!isDarkMode">☀️ Light</span>
+      <span v-else>🌙 Dark</span>
+    </div>
+  </div>
+  <div v-if="!loading" class="blog-post" :class="{ 'dark-mode': isDarkMode }"
+    :style="{ backgroundColor: isDarkMode ? '#1e1e1e' : '#fff', color: isDarkMode ? '#fff' : '#000' }">
+    <div class="blog-post-container" :class="{ 'dark-mode': isDarkMode }">
+
+      <h2 class="blog-post-title" :class="{ 'dark-mode': isDarkMode }">{{ post.title }}</h2>
+      <div class="blog-post-image-container">
+        <!-- <img :src="post.image.link" :alt="post.image.title" class="blog-post-image"> -->
+        <img :src="heroImage" alt="Hero Image" class="blog-post-image">
+      </div>
+      <p class="blog-post-description" :class="{ 'dark-mode': isDarkMode }">{{ post.description }}</p>
+      <div v-html="renderedBody" class="blog-post-body" :class="{ 'dark-mode': isDarkMode }">
+      </div>
+      <p class="blog-post-date" :class="{ 'dark-mode': isDarkMode }">{{ formatDate(post.publishDate) }}</p>
+    </div>
+  </div>
+
   <div v-else class="loading">
     <!-- <div class="loader"></div> -->
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="  display: block;"
@@ -76,7 +91,8 @@ export default {
       ],
       post: {},
       renderedBody: '',
-      heroImage: null
+      heroImage: null,
+      isDarkMode: false
     }
   },
   computed: {
@@ -128,10 +144,62 @@ export default {
     formatDate(date) {
       return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
     },
+    toggleDarkMode() {
+      this.isDarkMode = !this.isDarkMode;
+    },
   },
 }
 </script>
 <style scoped>
+/* Back Button START*/
+.back-button-container {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.back-button {
+  display: inline-block;
+  background-color: #fff;
+  color: #444;
+  border: 1px solid #444;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease-in-out;
+}
+
+.back-button:hover {
+  background-color: #444;
+  color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Back Button END*/
+
+/* Dark Button START */
+
+.dark-mode {
+  background-color: #1E1E1E;
+  color: white !important;
+}
+
+
+.dark-mode-buton-container {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+::v-deep .dark-mode .blog-post-body a {
+  color: #FFFF00 !important;
+}
+
+/* Dark Button END */
+
 .blog-post {
   background-color: #fff;
   padding: 20px;
