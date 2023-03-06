@@ -14,7 +14,7 @@
     :style="{ backgroundColor: isDarkMode ? '#1e1e1e' : '#fff', color: isDarkMode ? '#fff' : '#000' }">
     <div class="blog-post-container" :class="{ 'dark-mode': isDarkMode }">
 
-      <h2 class="blog-post-title" :class="{ 'dark-mode': isDarkMode }">{{ post.title }}</h2>
+      <h1 class="blog-post-title" :class="{ 'dark-mode': isDarkMode }">{{ post.title }}</h1>
       <div class="blog-post-image-container">
         <!-- <img :src="post.image.link" :alt="post.image.title" class="blog-post-image"> -->
         <img :src="heroImage" alt="Hero Image" class="blog-post-image">
@@ -159,7 +159,7 @@ export default {
 }
 
 .back-button {
-  display: inline-block;
+  /* display: inline-block; */
   background-color: #fff;
   color: #444;
   border: 1px solid #444;
@@ -214,10 +214,11 @@ export default {
 }
 
 .blog-post-title {
-  font-size: 24px;
+  /* font-size: 24px; */
   margin-bottom: 20px;
   color: #444;
   font-family: 'Source Sans Pro', sans-serif;
+  padding: 0px 12px;
 }
 
 .blog-post-image-container {
@@ -231,12 +232,17 @@ export default {
   position: relative;
 }
 
+.blog-post-image {
+  max-width: 100vw;
+}
+
 .blog-post-description {
   font-size: 18px;
   line-height: 1.5;
   margin-bottom: 20px;
   color: #777;
   font-family: 'Source Sans Pro', sans-serif;
+  padding: 0px 12px;
 }
 
 .blog-post-body-container {
@@ -257,6 +263,7 @@ export default {
   text-align: justify;
   max-width: 800px;
   font-family: 'Source Sans Pro', sans-serif;
+  padding: 0px 24px;
 
 }
 
