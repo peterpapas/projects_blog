@@ -18,8 +18,8 @@
             <div class="post-main">
                 <h4 class="title">{{ post.title }}</h4>
                 <!-- <p class="blog-post-description" style="color: #777777">
-                                                                                                      {{ post.description }}
-                                                                                                    </p> -->
+                                                                                                                            {{ post.description }}
+                                                                                                                          </p> -->
 
               <div class="line"></div>
 
@@ -27,10 +27,10 @@
             <!-- <div class="post-meta">
                 <div class="post-info">
                   <div class="post-info-text">
-                                                                                                      <p class="post-date">{{ formatDate(post.publishDate) }}</p>
-                                                                                                    </div>
-                                                                                                    </div>
-                                                                                                  </div> -->
+                                                                                                                            <p class="post-date">{{ formatDate(post.publishDate) }}</p>
+                                                                                                                          </div>
+                                                                                                                          </div>
+                                                                                                                        </div> -->
             </div>
           </div>
         </div>
@@ -369,6 +369,18 @@ export default {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 20px;
   font-weight: 400;
+}
+
+@media screen and (max-width: 650px) {
+  .blog-title {
+    font: 677 17px/1 Source Sans Pro, sans-serif;
+    margin: 0;
+    font-weight: 700;
+  }
+
+  .header {
+    padding: 10px;
+  }
 }
 </style>
 
