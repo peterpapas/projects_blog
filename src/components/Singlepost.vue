@@ -69,8 +69,7 @@
 <script>
 import { createClient } from 'contentful'
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer'
-
-
+import { BLOCKS, INLINES } from '@contentful/rich-text-types';
 
 export default {
   name: 'Singlepost',
@@ -90,23 +89,52 @@ export default {
         "Patience is a virtue... 😌🙏",
       ],
       post: {},
-      renderedBody: '',
+      renderedBody: null,
       heroImage: null,
-      isDarkMode: false
+      isDarkMode: false,
+      renderNode: {
+
+        [BLOCKS.EMBEDDED_ASSET]: (node) => {
+          return `<img src="${node.data.target.fields.file.url}" alt="${node.data.target.fields.description}" />`
+        },
+        [BLOCKS.EMBEDDED_ENTRY]: (node) => {
+          const { contentType } = node.data.target.sys;
+          if (contentType.sys.id === 'embeddedImage') {
+            const imageUrl = node.data.target.fields.image.fields.file?.url;
+            const alt = node.data.target.fields.image.fields.title;
+            return imageUrl ? `<img src="https:${imageUrl}" alt="${alt}" />` : '';
+          }
+          return '';
+          // Handle other types of embedded entries as needed
+        },
+        [INLINES.EMBEDDED_ENTRY]: (node) => {
+          const entryId = node.data.target.sys.id;
+          const entryType = node.data.target.sys.contentType.sys.id;
+          if (entryType === 'image') {
+            const imageUrl = `https:${node.data.target.fields.file?.url}`;
+            const imageAlt = node.data.target.fields.description;
+            return imageUrl ? `<img src="${imageUrl}" alt="${imageAlt}" />` : '';
+          }
+          return '';
+          // Handle other types of embedded entries as needed
+        },
+        [INLINES.HYPERLINK]: (node) => {
+          return `<a href="${node.data.uri}" target="_blank">${node.content[0].value}</a>`
+        }
+      }
     }
   },
   computed: {
     randomMessage() {
       return this.messages[Math.floor(Math.random() * this.messages.length)];
     },
+
   },
-  created() {
-    // Simulate a delay before the data is loaded
+
+  async created() {
     setTimeout(() => {
       this.loading = false;
-    }, 3000);
-  },
-  async created() {
+    }, 5000);
     const client = createClient({
       space: import.meta.env.VITE_CONTENTFUL_SPACE_ID,
       accessToken: import.meta.env.VITE_CONTENTFUL_ACCESS_TOKEN,
@@ -132,7 +160,11 @@ export default {
           publishDate: item.fields.publishDate,
           richText: item.fields.richText,
         }
-        this.renderedBody = documentToHtmlString(item.fields.richText)
+
+        // Updated line of code
+        this.renderedBody = documentToHtmlString(item.fields.richText, {
+          renderNode: this.renderNode,
+        });
       }
     } catch (error) {
       console.log(error)
