@@ -95,7 +95,7 @@ export default {
       renderNode: {
 
         [BLOCKS.EMBEDDED_ASSET]: (node) => {
-          return `<img src="${node.data.target.fields.file.url}" alt="${node.data.target.fields.description}" />`
+          return `<img src="${node.data.target.fields.file.url}" alt="${node.data.target.fields.description}"  />`
         },
         [BLOCKS.EMBEDDED_ENTRY]: (node) => {
           const { contentType } = node.data.target.sys;
@@ -106,6 +106,9 @@ export default {
           }
           return '';
           // Handle other types of embedded entries as needed
+        },
+        [INLINES.EMBEDDED_ASSET]: (node) => {
+          return `<img src="${node.data.target.fields.file.url}" alt="${node.data.target.fields.description}"  />`
         },
         [INLINES.EMBEDDED_ENTRY]: (node) => {
           const entryId = node.data.target.sys.id;
@@ -246,11 +249,10 @@ export default {
 }
 
 .blog-post-title {
-  /* font-size: 24px; */
-  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
   color: #444;
   font-family: 'Source Sans Pro', sans-serif;
-  padding: 0px 12px;
 }
 
 .blog-post-image-container {
@@ -260,12 +262,14 @@ export default {
   min-height: 150px;
   overflow: hidden;
   margin-bottom: 20px;
-  border-radius: 8px;
-  position: relative;
+  justify-content: center !important;
+  display: flex;
 }
 
 .blog-post-image {
-  max-width: 100vw;
+  max-width: 90%;
+  border-radius: 8px;
+
 }
 
 .blog-post-description {
@@ -274,7 +278,8 @@ export default {
   margin-bottom: 20px;
   color: #777;
   font-family: 'Source Sans Pro', sans-serif;
-  padding: 0px 12px;
+  display: flex;
+  justify-content: center;
 }
 
 .blog-post-body-container {
@@ -326,5 +331,13 @@ export default {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 20px;
   font-weight: 400;
+}
+
+::v-deep .blog-post-body img {
+  display: block;
+  max-width: 100%;
+  margin: 15px auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 </style>
