@@ -245,7 +245,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 4rem;
+  padding-top: 56px;
 }
 
 .blog-post-title {
