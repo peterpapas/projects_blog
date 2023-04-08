@@ -252,7 +252,10 @@ export default {
   display: flex;
   justify-content: center;
   color: #444;
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: 'Open Sans', sans-serif;
+  text-align: center;
+  font-size: 30px;
+
 }
 
 .blog-post-image-container {
@@ -273,11 +276,11 @@ export default {
 }
 
 .blog-post-description {
-  font-size: 18px;
+  /* font-size: 18px; */
   line-height: 1.5;
   margin-bottom: 20px;
   color: #777;
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: 'Open Sans', sans-serif;
   display: flex;
   justify-content: center;
 }
@@ -293,21 +296,23 @@ export default {
 }
 
 .blog-post-body {
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.5;
   margin-bottom: 20px;
   color: #333;
-  text-align: justify;
+  text-align: left;
   max-width: 800px;
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: 'Open Sans', sans-serif;
   padding: 0px 24px;
 
 }
 
+
+
 .blog-post-date {
   font-size: 16px;
   color: #999;
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
 
@@ -328,7 +333,7 @@ export default {
   font-size: 1.5rem;
   margin-top: 1rem;
   text-align: center;
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-size: 20px;
   font-weight: 400;
 }
