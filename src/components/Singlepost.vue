@@ -303,7 +303,7 @@ export default {
   text-align: left;
   max-width: 800px;
   font-family: 'Open Sans', sans-serif;
-  padding: 0px 24px;
+
 
 }
 
