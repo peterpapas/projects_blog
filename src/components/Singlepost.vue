@@ -291,8 +291,8 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-right: 1rem;
-  padding-left: 1rem;
+  /* padding-right: 1rem;
+  padding-left: 1rem; */
 }
 
 .blog-post-body {
@@ -303,8 +303,8 @@ export default {
   text-align: left;
   max-width: 800px;
   font-family: 'Open Sans', sans-serif;
-
-
+  /* padding: 0px 24px; */
+  word-break: break-word;
 }
 
 
