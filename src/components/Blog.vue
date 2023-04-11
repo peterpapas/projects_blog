@@ -4,37 +4,68 @@
 
 <template>
   <div class="main-container">
+    <!-- <div class="header">
+                                                                                                                                                                                                                                <h1 class="blog-title" style="color: #333333">👇⬇️ ✨Current
+                                                                                                                                                                                                                                  Projects✨ ⬇️👇</h1>
+                                                                                                                                                                                                                              </div> -->
     <div class="header">
-      <h1 class="blog-title" style="color: #333333">👇⬇️ ✨Current
-        Projects✨ ⬇️👇</h1>
+      <div class="header-content">
+        <h1 class="blog-title">Welcome to Peter's Fullstack Corner</h1>
+        <h2>also known as... Bliggity-blog...🔥👨‍💻</h2>
+        <p class="blog-description">Discover a collection of my fullstack and other projects in one place.</p>
+        <div class="rocketship-container">
+          <img src="../assets/rocketship.png" alt="rocketship image" class="rocketship-image">
+          <div class="rocketship-shadow"></div>
+        </div>
+      </div>
     </div>
     <div v-if="!loading" class="blog-container">
-
-      <div v-for="post in posts" :key="post.slug" class="blog-post" @click="navigateToSinglePost(post.slug)">
-        <div class="list-card">
-          <div class="post">
-            <img :src="getHeroImage(post)" alt="Hero Image" class="post-image" />
-          <div class="post-body">
-            <div class="post-main">
-                <h4 class="title">{{ post.title }}</h4>
-                <!-- <p class="blog-post-description" style="color: #777777">
-                                                                                                                            {{ post.description }}
-                                                                                                                          </p> -->
-
-              <div class="line"></div>
-
+      <div class="blog-post" v-if="posts.length > 0">
+        <router-link :to="`/${posts[0].slug}`" class="post-link">
+          <div class="list-card">
+            <div class="postFirst">
+              <img :src="getHeroImage(posts[0])" alt="Hero Image" class="post-image" />
+              <div class="post-body">
+                <div class="post-main">
+                  <h4 class="title">{{ posts[0].title }}</h4>
+                <p class="blog-post-description" style="color: #777777">{{ posts[0].description }}</p>
+                <!-- <div class="line"></div> -->
+              </div>
+              <!-- <div class="post-meta">
+                  <div class="post-info">
+                    <div class="post-info-text">
+                                                              <p class="post-date">{{ formatDate(posts[0].publishDate) }}</p>
+                                                            </div>
+                                                          </div>
+                                                        </div> -->
+              </div>
             </div>
-            <!-- <div class="post-meta">
-                <div class="post-info">
-                  <div class="post-info-text">
-                                                                                                                            <p class="post-date">{{ formatDate(post.publishDate) }}</p>
-                                                                                                                          </div>
-                                                                                                                          </div>
-                                                                                                                        </div> -->
+          </div>
+        </router-link>
+      </div>
+      <div class="grid-container" v-if="posts.length > 1">
+        <div v-for="(post) in posts.slice(1, 10)" :key="post.slug" class="grid-item"
+          @click="navigateToSinglePost(post.slug)">
+          <div class="list-card">
+            <div class="post">
+              <img :src="getHeroImage(post)" alt="Hero Image" class="post-image" />
+              <div class="post-body">
+                <div class="post-main">
+                  <h4 class="title">{{ post.title }}</h4>
+                <p class="blog-post-description" style="color: #777777">{{ post.description }}</p>
+                <div class="line"></div>
+              </div>
+              <!-- <div class="post-meta">
+                  <div class="post-info">
+                    <div class="post-info-text">
+                                                                <p class="post-date">{{ formatDate(post.publishDate) }}</p>
+                                                              </div>
+                                                            </div>
+                                                          </div> -->
+              </div>
             </div>
           </div>
         </div>
-
       </div>
     </div>
     <div v-else class="loading">
@@ -61,12 +92,12 @@
           </circle>
         </g>
         <g transform="translate(-15 0)">
-          <path d="M50 50L20 50A30 30 0 0 0 80 50Z" fill="#61f711" transform="rotate(90 50 50)"></path>
-          <path d="M50 50L20 50A30 30 0 0 0 80 50Z" fill="#61f711">
+          <path d="M50 50L20 50A30 30 0 0 0 80 50Z" fill="#f7c600" transform="rotate(90 50 50)"></path>
+          <path d="M50 50L20 50A30 30 0 0 0 80 50Z" fill="#f7c600">
             <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s"
               values="0 50 50;45 50 50;0 50 50" keyTimes="0;0.5;1"></animateTransform>
           </path>
-          <path d="M50 50L20 50A30 30 0 0 1 80 50Z" fill="#61f711">
+          <path d="M50 50L20 50A30 30 0 0 1 80 50Z" fill="#f7c600">
             <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s"
               values="0 50 50;-45 50 50;0 50 50" keyTimes="0;0.5;1"></animateTransform>
           </path>
@@ -160,34 +191,12 @@ export default {
 </script>
 
 <style scoped>
-.main-container {
-
-  background-color: #8EC5FC;
-  background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%);
-
-}
-
 .blog-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 50px 20px;
 
 
-}
-
-.header {
-  background-color: #fff;
-  padding: 20px;
-  border-bottom: 1px solid #ddd;
-  box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.3);
-}
-
-.blog-title {
-  text-align: center;
-  font: bold 36px/1 "Source Sans Pro", sans-serif;
-  margin-bottom: 50px;
-  color: #212529;
-  font-weight: bold;
 }
 
 .blog-post-description {
@@ -203,14 +212,15 @@ export default {
 }
 
 .title {
-  color: #39b982;
+  /* color: #39b982; */
+  color: #4FACF7;
   font: 600 24px "Source Sans Pro", sans-serif;
 }
 
 
 @media screen and (min-width: 40em) {
   .title {
-    font-size: 40.5px;
+    font-size: 30.5px;
   }
 }
 
@@ -232,6 +242,24 @@ export default {
   cursor: pointer;
 }
 
+.postFirst {
+  position: relative;
+  height: 100%;
+  display: grid;
+  background: #fff;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  border-radius: 12px;
+  transition: box-shadow 0.5s cubic-bezier(0.19, 1, 0.22, 1),
+    transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.postFirst:hover {
+  box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.3);
+  transform: scale(1.03);
+  cursor: pointer;
+}
+
 
 
 
@@ -241,9 +269,13 @@ export default {
   right: 0;
   height: 8px;
   width: 0%;
-  background-color: rgba(255, 132, 0, 0.817);
+  background-color: rgba(218, 247, 255, 0.594);
   transition: width 0.5s ease-in-out;
   border-radius: 0px 50px 50px 0px;
+}
+
+.post-main {
+  text-align: center;
 }
 
 .post-main:hover .line {
@@ -258,6 +290,7 @@ export default {
   max-height: 500px;
   width: 100%;
   height: 100%;
+  border-radius: 12px
 }
 
 @media screen and (min-width: 40em) {
@@ -271,14 +304,14 @@ export default {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 20px;
   background: #fff;
   z-index: 2;
   transition: background cubic-bezier(0.445, 0.05, 0.55, 0.95) 250ms;
+
 }
 
 .post-body:hover {
-  background: linear-gradient(45deg, #85FFBD 0%, #FFFB7D 100%);
+  background: linear-gradient(45deg, #b3ddff 0%, #ffff 100%);
 }
 
 
@@ -382,71 +415,170 @@ export default {
     padding: 10px;
   }
 }
-</style>
+
+/* GRID START */
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
+}
+
+.grid-item {
+  grid-column-end: span 1;
+  grid-row-end: span 1;
+}
+
+@media (max-width: 767px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* GRID END */
 
 
-/* .learn-more {
+/* FIRST POST START */
+
+@media only screen and (min-width: 1024px) {
+  .postFirst {
+    display: flex;
+  }
+}
+
+/* FIRST POST END */
+
+/* HEADER START */
+
+
+
+.header {
+  background-image: url('../assets/headerBackground.svg');
+  background-size: cover;
+  background-position: center;
+  padding: 20px;
+  box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.3);
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.blog-title {
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 4rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #4F4F4F;
+  background-image: linear-gradient(to right, #ff8a00, #e52e71, #6610f2, #00bfff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+h2 {
+  text-align: center;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 30px;
+  color: #007bff;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+}
+
+.blog-description {
+  text-align: center;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 300;
+  line-height: 1.5;
+  margin-bottom: 50px;
+  color: #6c757d;
+}
+
+.rocketship-container {
   position: relative;
-  bottom: 20px;
-  right: 20px;
-  padding: 10px 20px;
-  background-color: transparent;
-  border: 2px solid #333;
-  color: #333;
-  border-radius: 30px;
-  transition: all 0.3s ease-in-out;
+  width: 200px;
+  height: 200px;
 }
 
-.learn-more:hover {
-  background-color: #333;
-  color: #fff;
-  background-size: 200% auto;
-  background-image: linear-gradient(to left, #333, #666);
-  transition: all 0.3s ease-in-out;
-}
-
-.learn-more::before {
-  content: '';
+.rocketship-image {
   position: absolute;
   top: 0;
   left: 0;
-  width: 0;
-  height: 100%;
-  background-color: #f00;
-  transition: width 0.3s ease-in-out;
-}
-
-OLD LOADER
-
-<!-- <div class="loader"></div> -->
-
-.learn-more:hover::before {
   width: 100%;
-} 
-
-.loader {
-  display: inline-block;
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  border: 8px solid transparent;
-  border-top: 8px solid #8ac6d1;
-  background-image: linear-gradient(to bottom right, #8ac6d1, #eef2f3);
-  animation: spin 0.8s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite;
+  height: 100%;
+  filter: drop-shadow(2px 2px 2px #333);
+  animation: rocketship 2s ease-in-out infinite;
 }
 
-@keyframes spin {
+.rocketship-shadow {
+  position: absolute;
+  bottom: -10px;
+  left: 10px;
+  width: 180px;
+  height: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  filter: blur(4px);
+}
+
+@keyframes rocketship {
   0% {
-    transform: rotate(0deg);
+    transform: translateY(0);
   }
 
   50% {
-    transform: rotate(180deg) scale(0.8);
+    transform: translateY(-10px);
   }
 
   100% {
-    transform: rotate(360deg);
+    transform: translateY(0);
   }
 }
+
+/* HEADER END */
+
+
+/* .post-link {
+  text-decoration: none;
+} */
+
+.post-link {
+  text-decoration: none;
+}
+
+.post-link h4.title {
+  position: relative;
+  display: inline-block;
+  font-weight: bold;
+  padding-bottom: 5px;
+}
+
+.post-link h4.title::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #007bff;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.2s ease-in-out;
+}
+
+.post-link h4.title:hover::before,
+.post-link h4.title:focus::before {
+  transform: scaleX(1);
+}
+</style>
+
+
 
 

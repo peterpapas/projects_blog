@@ -51,12 +51,12 @@
         </circle>
       </g>
       <g transform="translate(-15 0)">
-        <path d="M50 50L20 50A30 30 0 0 0 80 50Z" fill="#61f711" transform="rotate(90 50 50)"></path>
-        <path d="M50 50L20 50A30 30 0 0 0 80 50Z" fill="#61f711">
+        <path d="M50 50L20 50A30 30 0 0 0 80 50Z" fill="#f7c600" transform="rotate(90 50 50)"></path>
+        <path d="M50 50L20 50A30 30 0 0 0 80 50Z" fill="#f7c600">
           <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s"
             values="0 50 50;45 50 50;0 50 50" keyTimes="0;0.5;1"></animateTransform>
         </path>
-        <path d="M50 50L20 50A30 30 0 0 1 80 50Z" fill="#61f711">
+        <path d="M50 50L20 50A30 30 0 0 1 80 50Z" fill="#f7c600">
           <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s"
             values="0 50 50;-45 50 50;0 50 50" keyTimes="0;0.5;1"></animateTransform>
         </path>
