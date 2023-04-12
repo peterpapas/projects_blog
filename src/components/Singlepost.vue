@@ -12,9 +12,8 @@
   </div>
   <div v-if="!loading" class="blog-post" :class="{ 'dark-mode': isDarkMode }"
     :style="{ backgroundColor: isDarkMode ? '#1e1e1e' : '#fff', color: isDarkMode ? '#fff' : '#000' }">
+    <h1 class="blog-post-title" :class="{ 'dark-mode': isDarkMode }">{{ post.title }}</h1>
     <div class="blog-post-container" :class="{ 'dark-mode': isDarkMode }">
-
-      <h1 class="blog-post-title" :class="{ 'dark-mode': isDarkMode }">{{ post.title }}</h1>
       <div class="blog-post-image-container">
         <!-- <img :src="post.image.link" :alt="post.image.title" class="blog-post-image"> -->
         <img :src="heroImage" alt="Hero Image" class="blog-post-image">
