@@ -254,7 +254,8 @@ export default {
   color: #444;
   font-family: 'Open Sans', sans-serif;
   text-align: center;
-  font-size: 30px;
+  font-size: 48px;
+  font-weight: 600;
 
 }
 
