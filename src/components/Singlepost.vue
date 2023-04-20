@@ -344,5 +344,6 @@ export default {
   margin: 15px auto;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-height: 600px;
 }
 </style>
