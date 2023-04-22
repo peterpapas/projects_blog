@@ -24,7 +24,7 @@
         <router-link :to="`/${posts[0].slug}`" class="post-link">
           <div class="list-card">
             <div class="postFirst">
-              <img :src="getHeroImage(posts[0])" alt="Hero Image" class="post-image" />
+              <img :src="getHeroImage(posts[0])" alt="Hero Image" class="post-image-hero" />
               <div class="post-body">
                 <div class="post-main">
                   <h4 class="title">{{ posts[0].title }}</h4>
@@ -287,6 +287,14 @@ export default {
 
 .post-image {
   object-fit: cover;
+  max-height: 200px;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px
+}
+
+.post-image-hero{
+  object-fit: cover;
   max-height: 500px;
   width: 100%;
   height: 100%;
@@ -328,7 +336,11 @@ export default {
   }
 
   .post-image {
-    max-height: 150px;
+    max-height: 200px;
+  }
+
+  .post-image-hero {
+    max-height: 200px;
   }
 
   .post-info {
