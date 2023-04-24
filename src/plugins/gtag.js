@@ -1,6 +1,6 @@
 export default ({ app }) => {
   // Initialize the Google Analytics library with your tracking code
-  const GA_ID = "G-ETYNMNKZ0S";
+  const GA_ID = "G-Z1QYL2QYK4";
   window.dataLayer = window.dataLayer || [];
   function gtag() {
     dataLayer.push(arguments);
