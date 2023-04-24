@@ -110,6 +110,7 @@
 
 <script>
 import { createClient } from "contentful";
+import './plugins/gtag.js';
 
 export default {
   name: "Blog",
