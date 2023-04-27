@@ -4,17 +4,15 @@
 
 <template>
   <div class="main-container">
-    <!-- <div class="header">
-                                                                                                                                                                                                                                <h1 class="blog-title" style="color: #333333">👇⬇️ ✨Current
-                                                                                                                                                                                                                                  Projects✨ ⬇️👇</h1>
-                                                                                                                                                                                                                              </div> -->
     <div class="header">
       <div class="header-content">
         <h1 class="blog-title">Welcome to Peter's Fullstack Corner</h1>
         <h2>also known as... Bliggity-blog...🔥👨‍💻</h2>
         <p class="blog-description">Discover a collection of my fullstack and other projects in one place.</p>
         <div class="rocketship-container">
-          <img src="../assets/rocketship.png" alt="rocketship image" class="rocketship-image">
+          <img
+            src="https://res.cloudinary.com/dxetyokin/image/upload/f_auto,q_auto/v1682572023/fullstackpeter.com/Header/headerRocketship.png"
+            alt="rocketship image" class="rocketship-image">
           <div class="rocketship-shadow"></div>
         </div>
       </div>
