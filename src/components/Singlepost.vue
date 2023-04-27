@@ -261,6 +261,7 @@ export default {
 
 .blog-post-image-container {
   /* height: 300px; */
+  max-width: 800px;
   -o-object-fit: cover;
   object-fit: cover;
   min-height: 150px;
