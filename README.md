@@ -5,6 +5,7 @@ vue_blog is a modern and user-friendly application designed to create a sleek bl
 ## Technologies Used
 
 - Vite
+- NPM
 - Vue.js
 - CSS
 - Contentful CMS
