@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import './plugins/gtag.js';
+import './plugins/gtag';
 
 export default {
   name: 'App',

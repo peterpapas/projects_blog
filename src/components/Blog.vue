@@ -28,10 +28,10 @@
               <div class="post-body">
                 <div class="post-main">
                   <h4 class="title">{{ posts[0].title }}</h4>
-                <p class="blog-post-description" style="color: #777777">{{ posts[0].description }}</p>
-                <!-- <div class="line"></div> -->
-              </div>
-              <!-- <div class="post-meta">
+                  <p class="blog-post-description" style="color: #777777">{{ posts[0].description }}</p>
+                  <!-- <div class="line"></div> -->
+                </div>
+                <!-- <div class="post-meta">
                   <div class="post-info">
                     <div class="post-info-text">
                                                               <p class="post-date">{{ formatDate(posts[0].publishDate) }}</p>
@@ -52,10 +52,10 @@
               <div class="post-body">
                 <div class="post-main">
                   <h4 class="title">{{ post.title }}</h4>
-                <p class="blog-post-description" style="color: #777777">{{ post.description }}</p>
-                <div class="line"></div>
-              </div>
-              <!-- <div class="post-meta">
+                  <p class="blog-post-description" style="color: #777777">{{ post.description }}</p>
+                  <div class="line"></div>
+                </div>
+                <!-- <div class="post-meta">
                   <div class="post-info">
                     <div class="post-info-text">
                                                                 <p class="post-date">{{ formatDate(post.publishDate) }}</p>
@@ -110,7 +110,7 @@
 
 <script>
 import { createClient } from "contentful";
-import './plugins/gtag.js';
+import '../plugins/gtag.js';
 
 export default {
   name: "Blog",
@@ -294,7 +294,7 @@ export default {
   border-radius: 12px
 }
 
-.post-image-hero{
+.post-image-hero {
   object-fit: cover;
   max-height: 500px;
   width: 100%;

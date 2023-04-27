@@ -69,7 +69,7 @@
 import { createClient } from 'contentful'
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer'
 import { BLOCKS, INLINES } from '@contentful/rich-text-types';
-import './plugins/gtag.js';
+import '../plugins/gtag.js';
 
 export default {
   name: 'Singlepost',
