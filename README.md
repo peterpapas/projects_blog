@@ -1,7 +1,31 @@
-# Vue 3 + Vite
+# vue_blog
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+vue_blog is a modern and user-friendly application designed to create a sleek blog website, leveraging the power of Vue.js, CSS, and Contentful CMS. It offers an appealing interface and seamless navigation, with a fully responsive design and a dark mode toggle feature.
 
-## Recommended IDE Setup
+## Technologies Used
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+- Vite
+- Vue.js
+- CSS
+- Contentful CMS
+- Netlify
+- GTAG
+## Features
+
+Display blog posts fetched from Contentful CMS in an organized layout
+User-friendly interface with seamless navigation
+Responsive and visually appealing design
+Dark mode toggle for enhanced user experience
+
+
+## Installation
+To run vue_blog locally, follow these steps:
+
+1. Clone the repository to your local machine.
+2. Install dependencies by running npm install.
+3. Start the development server with npm run serve.
+4. Open http://localhost:8080 in your web browser.
+
+## Usage
+
+To use vue_blog, simply visit the deployed website and browse the blog posts. You can toggle between light and dark modes using the "Dark Mode".
