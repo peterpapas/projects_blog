@@ -106,9 +106,29 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+/// <reference types="vite/client" />
 import { createClient } from "contentful";
 import '../plugins/gtag.js';
+import { RouteLocationNormalized, Router } from "vue-router";
+
+type MyComponentInstance = {
+  $router: Router;
+  $route: RouteLocationNormalized;
+};
+
+interface Post {
+  title: string;
+  slug: string;
+  image: string;
+  description: string;
+  publishDate: string;
+  heroImage: {
+    sys: {
+      id: string;
+    }
+  };
+}
 
 export default {
   name: "Blog",
@@ -127,62 +147,56 @@ export default {
         "Is it done yet? 🤔❓",
         "Patience is a virtue... 😌🙏",
       ],
-      posts: [],
+      posts: [] as Post[],
       heroImage: null,
     };
   },
   computed: {
-    randomMessage() {
+    randomMessage(): string {
       return this.messages[Math.floor(Math.random() * this.messages.length)];
     },
   },
-  created() {
-    // Simulate a delay before the data is loaded
-    setTimeout(() => {
-      this.loading = false;
-    }, 3000);
-  },
   async created() {
-    const client = createClient({
+    const contentfulClient = createClient({
       space: import.meta.env.VITE_CONTENTFUL_SPACE_ID,
       accessToken: import.meta.env.VITE_CONTENTFUL_ACCESS_TOKEN,
     });
-    const response = await client.getEntries({
+
+    const response = await contentfulClient.getEntries<Post>({
       content_type: "blogPost",
     });
 
-    this.posts = response.items.map(async (item) => {
+    this.posts = await Promise.all(response.items.map(async (item) => {
       const heroImageId = item.fields.heroImage.sys.id;
-      const heroImageResponse = await client.getAsset(heroImageId);
+      const heroImageResponse = await contentfulClient.getAsset(heroImageId);
       const heroImageUrl = `https:${heroImageResponse.fields.file.url}`;
+
       return {
         title: item.fields.title,
         slug: item.fields.slug,
         image: heroImageUrl,
         description: item.fields.description,
-        // body: item.fields.body.slice(0, 50),
         publishDate: item.fields.publishDate,
+        heroImage: item.fields.heroImage,
       };
-    });
+    }));
 
-    this.posts = await Promise.all(this.posts);
-
-    if (this.posts.length > 0) {
+    if (this.posts.length) {
       this.loading = false;
     }
   },
   methods: {
-    formatDate(date) {
+    formatDate(date: string): string {
       return new Date(date).toLocaleDateString("en-US", {
         year: "numeric",
         month: "long",
         day: "numeric",
       });
     },
-    navigateToSinglePost(slug) {
-      this.$router.push({ name: "Singlepost", params: { slug: slug } });
+    navigateToSinglePost(slug: string): void {
+      this.$router.push({ name: "Singlepost", params: { slug } });
     },
-    getHeroImage(post) {
+    getHeroImage(post: Post): string {
       return post.image;
     },
   },
