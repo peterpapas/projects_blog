@@ -1,5 +1,3 @@
-<!-- TODO STYLE THIS COMPONENT  -->
-
 <template>
   <div class="back-button-container">
     <router-link to="/" class="back-button">Back</router-link>
@@ -16,7 +14,7 @@
     <div class="blog-post-container" :class="{ 'dark-mode': isDarkMode }">
       <div class="blog-post-image-container">
         <!-- <img :src="post.image.link" :alt="post.image.title" class="blog-post-image"> -->
-        <img :src="heroImage" alt="Hero Image" class="blog-post-image">
+        <img :src="post.heroImageUrl" alt="Hero Image" class="blog-post-image">
       </div>
       <p class="blog-post-description" :class="{ 'dark-mode': isDarkMode }">{{ post.description }}</p>
       <div v-html="renderedBody" class="blog-post-body" :class="{ 'dark-mode': isDarkMode }">
@@ -76,6 +74,7 @@ export default {
   data() {
     return {
       loading: true,
+      handleHeroImageError: false,
       messages: [
         "It's not a bug it's a feature! 🐛💡🐞",
         "Give me a second to think... 🤔⏰",
@@ -89,8 +88,9 @@ export default {
         "Patience is a virtue... 😌🙏",
       ],
       post: {},
+      cache: {},
       renderedBody: null,
-      heroImage: null,
+      heroImageUrl: null,
       isDarkMode: false,
       renderNode: {
 
@@ -105,25 +105,22 @@ export default {
             return imageUrl ? `<img src="https:${imageUrl}" alt="${alt}" />` : '';
           }
           return '';
-          // Handle other types of embedded entries as needed
         },
         [INLINES.EMBEDDED_ASSET]: (node) => {
           return `<img src="${node.data.target.fields.file.url}" alt="${node.data.target.fields.description}"  />`
         },
-        [INLINES.EMBEDDED_ENTRY]: (node) => {
-          const entryId = node.data.target.sys.id;
-          const entryType = node.data.target.sys.contentType.sys.id;
-          if (entryType === 'image') {
-            const imageUrl = `https:${node.data.target.fields.file?.url}`;
-            const imageAlt = node.data.target.fields.description;
-            return imageUrl ? `<img src="${imageUrl}" alt="${imageAlt}" />` : '';
-          }
-          return '';
-          // Handle other types of embedded entries as needed
-        },
         [INLINES.HYPERLINK]: (node) => {
           return `<a href="${node.data.uri}" target="_blank">${node.content[0].value}</a>`
-        }
+        },
+        [BLOCKS.EMBEDDED_ENTRY]: (node) => {
+          const { contentType } = node.data.target.sys;
+          if (contentType.sys.id === 'embeddedImage') {
+            const imageUrl = node.data.target.fields.image.fields.file?.url;
+            const alt = node.data.target.fields.image.fields.title;
+            return imageUrl ? `<img src="${imageUrl}" alt="${alt}" />` : '';
+          }
+          return '';
+        },
       }
     }
   },
@@ -135,45 +132,53 @@ export default {
   },
 
   async created() {
-    setTimeout(() => {
-      this.loading = false;
-    }, 5000);
     const client = createClient({
       space: import.meta.env.VITE_CONTENTFUL_SPACE_ID,
       accessToken: import.meta.env.VITE_CONTENTFUL_ACCESS_TOKEN,
     })
 
     try {
-      const response = await client.getEntries({
-        content_type: 'blogPost',
-        'fields.slug': this.$route.params.slug,
-        include: 1,
-      })
+      // Check if the response is already in the cache
+      if (this.cache[this.$route.params.slug]) {
+        this.post = this.cache[this.$route.params.slug]
+      } else {
+        const response = await client.getEntries({
+          content_type: 'blogPost',
+          'fields.slug': this.$route.params.slug,
+          include: 1,
+        })
 
-      if (response.items.length > 0) {
-        const item = response.items[0]
-        const heroImageId = item.fields.heroImage.sys.id
-        const heroImageResponse = await client.getAsset(heroImageId)
-        this.heroImage = `https:${heroImageResponse.fields.file.url}`
+        if (response.items.length > 0) {
+          const item = response.items[0]
+          const heroImageId = item.fields.heroImage.sys.id
+          const heroImageResponse = await client.getAsset(heroImageId)
+          const heroImageUrl = `https:${heroImageResponse.fields.file.url}`
 
-        this.post = {
-          title: item.fields.title,
-          slug: item.fields.slug,
-          description: item.fields.description,
-          publishDate: item.fields.publishDate,
-          richText: item.fields.richText,
+          this.post = {
+            title: item.fields.title,
+            slug: item.fields.slug,
+            description: item.fields.description,
+            publishDate: item.fields.publishDate,
+            richText: item.fields.richText,
+            heroImageUrl,
+          }
+          // Save the response in the cache
+          this.cache[this.$route.params.slug] = this.post
+
         }
-
-        // Updated line of code
-        this.renderedBody = documentToHtmlString(item.fields.richText, {
-          renderNode: this.renderNode,
-        });
       }
     } catch (error) {
       console.log(error)
     } finally {
       this.loading = false;
     }
+  },
+  watch: {
+    'post.richText'(richText) {
+      this.renderedBody = documentToHtmlString(richText, {
+        renderNode: this.renderNode,
+      });
+    },
   },
   methods: {
     formatDate(date) {
@@ -182,6 +187,7 @@ export default {
     toggleDarkMode() {
       this.isDarkMode = !this.isDarkMode;
     },
+
   },
 }
 </script>

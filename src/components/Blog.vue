@@ -1,7 +1,3 @@
-<!-- TODO ADD PAGE LOADER WHEN DATA IS NOT FETCHED  -->
-
-
-
 <template>
   <div class="main-container">
     <div class="header">
@@ -42,7 +38,7 @@
         </router-link>
       </div>
       <div class="grid-container" v-if="posts.length > 1">
-        <div v-for="(post) in posts.slice(1, 10)" :key="post.slug" class="grid-item"
+        <div v-for="(post) in posts.slice(1, displayedPosts)" :key="post.slug" class="grid-item"
           @click="navigateToSinglePost(post.slug)">
           <div class="list-card">
             <div class="post">
@@ -64,6 +60,27 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="no-more-posts-container" v-show="noMorePosts">
+        <div class="alert">
+          <div class="emoji">
+            <span class="red-face">😅</span>
+          </div>
+          <div class="message">
+            <p class="no-more-posts">Oopsie daisy🌼, looks like you've reached the end of our blog posts.
+              No worries, I'm always working on something. Stay tuned for updates!<span
+                class="emoji-icons">🔜📝👨‍💻</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="centered-container">
+        <button class="button-82-pushable" role="button" @click="loadMorePosts()">
+          <span class="button-82-shadow"></span>
+          <span class="button-82-edge"></span>
+          <span class="button-82-front text">
+            Read More
+          </span>
+        </button>
       </div>
     </div>
     <div v-else class="loading">
@@ -112,6 +129,11 @@ import { createClient } from "contentful";
 import '../plugins/gtag.js';
 import { RouteLocationNormalized, Router } from "vue-router";
 
+const contentfulClient = createClient({
+  space: import.meta.env.VITE_CONTENTFUL_SPACE_ID,
+  accessToken: import.meta.env.VITE_CONTENTFUL_ACCESS_TOKEN,
+});
+
 type MyComponentInstance = {
   $router: Router;
   $route: RouteLocationNormalized;
@@ -135,6 +157,7 @@ export default {
   data() {
     return {
       loading: true,
+      displayedPosts: 10,
       messages: [
         "It's not a bug it's a feature! 🐛💡🐞",
         "Give me a second to think... 🤔⏰",
@@ -149,6 +172,7 @@ export default {
       ],
       posts: [] as Post[],
       heroImage: null,
+      noMorePosts: false,
     };
   },
   computed: {
@@ -157,11 +181,6 @@ export default {
     },
   },
   async created() {
-    const contentfulClient = createClient({
-      space: import.meta.env.VITE_CONTENTFUL_SPACE_ID,
-      accessToken: import.meta.env.VITE_CONTENTFUL_ACCESS_TOKEN,
-    });
-
     const response = await contentfulClient.getEntries<Post>({
       content_type: "blogPost",
     });
@@ -199,6 +218,31 @@ export default {
     getHeroImage(post: Post): string {
       return post.image;
     },
+    async loadMorePosts() {
+      const response = await contentfulClient.getEntries<Post>({
+        content_type: "blogPost",
+        skip: this.displayedPosts,
+        limit: 9
+      });
+      if (response.items.length === 0) {
+        console.log("No more posts to load.");
+        alert("NO MORE")
+        this.noMorePosts = true
+        return;
+      }
+      const mappedPosts = response.items.map((entry) => {
+        return {
+          title: entry.fields.title,
+          slug: entry.fields.slug,
+          image: entry.fields.image,
+          description: entry.fields.description,
+          publishDate: entry.fields.publishDate,
+          heroImage: entry.fields.heroImage
+        };
+      });
+      this.posts.push(...mappedPosts);
+      this.displayedPosts += mappedPosts.length;
+    }
   },
 };
 </script>
@@ -602,7 +646,152 @@ h2 {
 .post-link h4.title:focus::before {
   transform: scaleX(1);
 }
+
+
+/* Read more button START */
+
+.button-82-pushable {
+  position: relative;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  outline-offset: 4px;
+  transition: filter 250ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-82-shadow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background: hsl(0deg 0% 0% / 0.25);
+  will-change: transform;
+  transform: translateY(2px);
+  transition:
+    transform 600ms cubic-bezier(.3, .7, .4, 1);
+}
+
+.button-82-edge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background: linear-gradient(to left,
+      hsl(340deg 100% 16%) 0%,
+      hsl(340deg 100% 32%) 8%,
+      hsl(340deg 100% 32%) 92%,
+      hsl(340deg 100% 16%) 100%);
+}
+
+.button-82-front {
+  display: block;
+  position: relative;
+  padding: 12px 27px;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  color: white;
+  background: hsl(345deg 100% 47%);
+  will-change: transform;
+  transform: translateY(-4px);
+  transition:
+    transform 600ms cubic-bezier(.3, .7, .4, 1);
+}
+
+@media (min-width: 768px) {
+  .button-82-front {
+    font-size: 1.25rem;
+    padding: 12px 42px;
+  }
+}
+
+.button-82-pushable:hover {
+  filter: brightness(110%);
+  -webkit-filter: brightness(110%);
+}
+
+.button-82-pushable:hover .button-82-front {
+  transform: translateY(-6px);
+  transition:
+    transform 250ms cubic-bezier(.3, .7, .4, 1.5);
+}
+
+.button-82-pushable:active .button-82-front {
+  transform: translateY(-2px);
+  transition: transform 34ms;
+}
+
+.button-82-pushable:hover .button-82-shadow {
+  transform: translateY(4px);
+  transition:
+    transform 250ms cubic-bezier(.3, .7, .4, 1.5);
+}
+
+.button-82-pushable:active .button-82-shadow {
+  transform: translateY(1px);
+  transition: transform 34ms;
+}
+
+.button-82-pushable:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.centered-container {
+  width: 50%;
+  margin: 1rem auto;
+  text-align: center;
+}
+
+/* Read More button END */
+
+/* Alert Start */
+.no-more-posts-container {
+  margin-top: 1rem;
+}
+
+.alert {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background-color: #fff3cd;
+  border: 1px solid #ffeeba;
+  border-radius: 0.25rem;
+}
+
+.emoji {
+  font-size: 2rem;
+  margin-right: 1rem;
+}
+
+.red-face {
+  color: #dc3545;
+}
+
+.message {
+  flex: 1;
+}
+
+.no-more-posts {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.emoji-icons {
+  font-size: 1.5rem;
+  margin-left: 0.5rem;
+}
+
+/* Alert End */
 </style>
+
 
 
 
