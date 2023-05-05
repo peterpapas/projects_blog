@@ -3,6 +3,7 @@ import App from "./App.vue";
 import { createRouter, createWebHistory } from "vue-router";
 import Blog from "./components/Blog.vue";
 import Singlepost from "./components/Singlepost.vue";
+import { createMetaManager } from "vue-meta";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -15,5 +16,6 @@ const router = createRouter({
 const app = createApp(App);
 
 app.use(router);
+app.use(createMetaManager());
 
 app.mount("#app");

@@ -68,9 +68,18 @@ import { createClient } from 'contentful'
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer'
 import { BLOCKS, INLINES } from '@contentful/rich-text-types';
 import '../plugins/gtag.js';
+import { useMeta } from 'vue-meta'
+
+
 
 export default {
   name: 'Singlepost',
+  setup() {
+    useMeta({
+      title: 'BlogPost', name: 'description',
+      content: "Check out the latest post on Peter's Full Stack Corner, where you can explore the world of full-stack development. Discover the latest trends, frameworks, and tools used by developers to build web applications from scratch. Our comprehensive guide covers everything from front-end design to back-end coding, with step-by-step tutorials, case studies, and expert insights. Follow our tips, tricks, and best practices to improve your coding skills and take your projects to the next level. Join our community and start your journey towards becoming a full-stack pro today!",
+    })
+  },
   data() {
     return {
       loading: true,

@@ -128,6 +128,7 @@
 import { createClient } from "contentful";
 import '../plugins/gtag.js';
 import { RouteLocationNormalized, Router } from "vue-router";
+import { useMeta } from 'vue-meta'
 
 const contentfulClient = createClient({
   space: import.meta.env.VITE_CONTENTFUL_SPACE_ID,
@@ -153,7 +154,14 @@ interface Post {
 }
 
 export default {
+
   name: "Blog",
+  setup() {
+    useMeta({
+      title: 'Home', name: 'description',
+      content: "Explore Peter's Fullstack Corner, the ultimate destination for Fullstack Development enthusiasts. Discover a wide range of projects that Peter has been working on, ranging from web development to mobile apps, and keep up to date with the latest trends in Fullstack development. Join Peter on his journey as he shares his passion for coding with the world.",
+    })
+  },
   data() {
     return {
       loading: true,
@@ -225,8 +233,6 @@ export default {
         limit: 9
       });
       if (response.items.length === 0) {
-        console.log("No more posts to load.");
-        alert("NO MORE")
         this.noMorePosts = true
         return;
       }
