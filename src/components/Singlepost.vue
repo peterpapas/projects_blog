@@ -23,6 +23,10 @@
     </div>
   </div>
 
+  <div v-if="error === '404'" class="error-message">
+    Oops, wrong page 404.
+  </div>
+
   <div v-else class="loading">
     <!-- <div class="loader"></div> -->
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="  display: block;"
@@ -82,6 +86,7 @@ export default {
   },
   data() {
     return {
+      error: null,
       loading: true,
       handleHeroImageError: false,
       messages: [
@@ -174,7 +179,10 @@ export default {
           // Save the response in the cache
           this.cache[this.$route.params.slug] = this.post
 
-        }
+        }else {
+      // No blog post found,
+      this.error = '404'; // You would need to define this data property
+    }
       }
     } catch (error) {
       console.log(error)
