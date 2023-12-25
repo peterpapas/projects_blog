@@ -8,26 +8,8 @@
       <span v-else>🌙 Dark</span>
     </div>
   </div>
-  <div v-if="!loading" class="blog-post" :class="{ 'dark-mode': isDarkMode }"
-    :style="{ backgroundColor: isDarkMode ? '#1e1e1e' : '#fff', color: isDarkMode ? '#fff' : '#000' }">
-    <h1 class="blog-post-title" :class="{ 'dark-mode': isDarkMode }">{{ post.title }}</h1>
-    <div class="blog-post-container" :class="{ 'dark-mode': isDarkMode }">
-      <div class="blog-post-image-container">
-        <!-- <img :src="post.image.link" :alt="post.image.title" class="blog-post-image"> -->
-        <img :src="post.heroImageUrl" alt="Hero Image" class="blog-post-image">
-      </div>
-      <p class="blog-post-description" :class="{ 'dark-mode': isDarkMode }">{{ post.description }}</p>
-      <div v-html="renderedBody" class="blog-post-body" :class="{ 'dark-mode': isDarkMode }">
-      </div>
-      <p class="blog-post-date" :class="{ 'dark-mode': isDarkMode }">{{ formatDate(post.publishDate) }}</p>
-    </div>
-  </div>
 
-  <div v-if="error === '404'" class="error-message">
-    Oops, wrong page 404.
-  </div>
-
-  <div v-else class="loading">
+  <div v-if="isloading" class="loading">
     <!-- <div class="loader"></div> -->
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="  display: block;"
       width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
@@ -64,6 +46,28 @@
       </g>
     </svg>
     <p class="loading-message">{{ randomMessage }}</p>
+  </div>
+
+  <div v-else-if="!isloading" class="blog-post" :class="{ 'dark-mode': isDarkMode }"
+    :style="{ backgroundColor: isDarkMode ? '#1e1e1e' : '#fff', color: isDarkMode ? '#fff' : '#000' }">
+    <h1 class="blog-post-title" :class="{ 'dark-mode': isDarkMode }">{{ post.title }}</h1>
+    <div class="blog-post-container" :class="{ 'dark-mode': isDarkMode }">
+      <div class="blog-post-image-container">
+        <!-- <img :src="post.image.link" :alt="post.image.title" class="blog-post-image"> -->
+        <img :src="post.heroImageUrl" alt="Hero Image" class="blog-post-image">
+      </div>
+      <p class="blog-post-description" :class="{ 'dark-mode': isDarkMode }">{{ post.description }}</p>
+      <div v-html="renderedBody" class="blog-post-body" :class="{ 'dark-mode': isDarkMode }">
+      </div>
+      <p class="blog-post-date" :class="{ 'dark-mode': isDarkMode }">{{ formatDate(post.publishDate) }}</p>
+    </div>
+  </div>
+
+  <div v-if="error === '404'" class="error-404">
+    <img src="path_to_your_funny_image_or_icon" alt="Funny 404 Image" class="error-image">
+    <h1>404: Page Not Found</h1>
+    <p>It seems we've coded ourselves into a corner. The page you're looking for doesn't exist!</p>
+    <a href="/" class="home-link">Return to the Homepage</a>
   </div>
 </template>
 
