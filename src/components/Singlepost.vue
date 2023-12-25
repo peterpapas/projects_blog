@@ -64,11 +64,13 @@
   </div>
 
   <div v-if="error === '404'" class="error-404">
-    <img src="path_to_your_funny_image_or_icon" alt="Funny 404 Image" class="error-image">
-    <h1>404: Page Not Found</h1>
-    <p>It seems we've coded ourselves into a corner. The page you're looking for doesn't exist!</p>
-    <a href="/" class="home-link">Return to the Homepage</a>
-  </div>
+  <img src="path_to_your_funny_image_or_icon" alt="Funny 404 Image" class="error-image">
+  <h1>404: Page Not Found</h1>
+  <p>It seems we've coded ourselves into a corner. The page you're looking for doesn't exist!</p>
+  <a href="/" class="home-link">Return to the Homepage</a>
+</div>
+
+
 </template>
 
 <script>
@@ -91,7 +93,7 @@ export default {
   data() {
     return {
       error: null,
-      loading: true,
+      isloading: true,
       handleHeroImageError: false,
       messages: [
         "It's not a bug it's a feature! 🐛💡🐞",
@@ -150,65 +152,89 @@ export default {
   },
 
   async created() {
-    const client = createClient({
-      space: import.meta.env.VITE_CONTENTFUL_SPACE_ID,
-      accessToken: import.meta.env.VITE_CONTENTFUL_ACCESS_TOKEN,
-    })
+  this.client = createClient({
+    space: import.meta.env.VITE_CONTENTFUL_SPACE_ID,
+    accessToken: import.meta.env.VITE_CONTENTFUL_ACCESS_TOKEN,
+  });
 
-    try {
-      // Check if the response is already in the cache
-      if (this.cache[this.$route.params.slug]) {
-        this.post = this.cache[this.$route.params.slug]
-      } else {
-        const response = await client.getEntries({
-          content_type: 'blogPost',
-          'fields.slug': this.$route.params.slug,
-          include: 1,
-        })
+  try {
+    await this.fetchPost();
+  } catch (error) {
+    console.error("Error fetching post:", error);
+    this.error = 'Error'; 
+  } finally {
+    this.isloading = false;
+  }
+},
 
-        if (response.items.length > 0) {
-          const item = response.items[0]
-          const heroImageId = item.fields.heroImage.sys.id
-          const heroImageResponse = await client.getAsset(heroImageId)
-          const heroImageUrl = `https:${heroImageResponse.fields.file.url}`
+methods: {
+  async fetchPost() {
+    const slug = this.$route.params.slug;
 
-          this.post = {
-            title: item.fields.title,
-            slug: item.fields.slug,
-            description: item.fields.description,
-            publishDate: item.fields.publishDate,
-            richText: item.fields.richText,
-            heroImageUrl,
-          }
-          // Save the response in the cache
-          this.cache[this.$route.params.slug] = this.post
-
-        }else {
-      // No blog post found,
-      this.error = '404'; // You would need to define this data property
+    // Check cache first
+    if (this.cache[slug]) {
+      this.post = this.cache[slug];
+      return;
     }
-      }
-    } catch (error) {
-      console.log(error)
-    } finally {
-      this.loading = false;
+
+    // Fetch new post data
+    const response = await this.fetchBlogPost(slug);
+    if (!response || response.items.length === 0) {
+      this.error = '404';
+      return;
     }
+
+    const item = response.items[0];
+    this.post = await this.constructPostObject(item);
+    this.cache[slug] = this.post; // Cache the response
   },
+
+  async constructPostObject(item) {
+    // ... logic to construct post object
+  },
+
+  async fetchBlogPost(slug) {
+    return this.client.getEntries({
+      content_type: 'blogPost',
+      'fields.slug': slug,
+      include: 1,
+    });
+  },
+
+  async fetchBlogPost(slug) {
+    return this.client.getEntries({
+      content_type: 'blogPost',
+      'fields.slug': slug,
+      include: 1,
+    });
+  },
+
+  async constructPostObject(item) {
+    const heroImageResponse = await this.client.getAsset(item.fields.heroImage.sys.id);
+    const heroImageUrl = `https:${heroImageResponse.fields.file.url}`;
+
+    return {
+      title: item.fields.title,
+      slug: item.fields.slug,
+      description: item.fields.description,
+      publishDate: item.fields.publishDate,
+      richText: item.fields.richText,
+      heroImageUrl,
+    };
+  },
+  formatDate(date) {
+      return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+    },
+  toggleDarkMode() {
+      this.isDarkMode = !this.isDarkMode;
+    },
+},
   watch: {
     'post.richText'(richText) {
       this.renderedBody = documentToHtmlString(richText, {
         renderNode: this.renderNode,
       });
     },
-  },
-  methods: {
-    formatDate(date) {
-      return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-    },
-    toggleDarkMode() {
-      this.isDarkMode = !this.isDarkMode;
-    },
-
   },
 }
 </script>
@@ -375,4 +401,42 @@ export default {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   max-height: 600px;
 }
+
+/* 404 */
+
+.error-404 {
+  text-align: center;
+  padding: 50px;
+  color: #333;
+}
+
+.error-404 .error-image {
+  max-width: 300px;
+  margin-bottom: 20px;
+}
+
+.error-404 h1 {
+  font-size: 2.5rem;
+  color: #de4d4d;
+}
+
+.error-404 p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.error-404 .home-link {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.error-404 .home-link:hover {
+  background-color: #45a049;
+}
+
 </style>
