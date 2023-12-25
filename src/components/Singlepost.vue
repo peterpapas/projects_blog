@@ -64,13 +64,11 @@
   </div>
 
   <div v-if="error === '404'" class="error-404">
-  <img src="path_to_your_funny_image_or_icon" alt="Funny 404 Image" class="error-image">
-  <h1>404: Page Not Found</h1>
-  <p>It seems we've coded ourselves into a corner. The page you're looking for doesn't exist!</p>
-  <a href="/" class="home-link">Return to the Homepage</a>
-</div>
-
-
+    <img src="path_to_your_funny_image_or_icon" alt="Funny 404 Image" class="error-image">
+    <h1>404: Page Not Found</h1>
+    <p>It seems we've coded ourselves into a corner. The page you're looking for doesn't exist!</p>
+    <a href="/" class="home-link">Return to the Homepage</a>
+  </div>
 </template>
 
 <script>
@@ -152,83 +150,71 @@ export default {
   },
 
   async created() {
-  this.client = createClient({
-    space: import.meta.env.VITE_CONTENTFUL_SPACE_ID,
-    accessToken: import.meta.env.VITE_CONTENTFUL_ACCESS_TOKEN,
-  });
-
-  try {
-    await this.fetchPost();
-  } catch (error) {
-    console.error("Error fetching post:", error);
-    this.error = 'Error'; 
-  } finally {
-    this.isloading = false;
-  }
-},
-
-methods: {
-  async fetchPost() {
-    const slug = this.$route.params.slug;
-
-    // Check cache first
-    if (this.cache[slug]) {
-      this.post = this.cache[slug];
-      return;
-    }
-
-    // Fetch new post data
-    const response = await this.fetchBlogPost(slug);
-    if (!response || response.items.length === 0) {
-      this.error = '404';
-      return;
-    }
-
-    const item = response.items[0];
-    this.post = await this.constructPostObject(item);
-    this.cache[slug] = this.post; // Cache the response
-  },
-
-  async constructPostObject(item) {
-    // ... logic to construct post object
-  },
-
-  async fetchBlogPost(slug) {
-    return this.client.getEntries({
-      content_type: 'blogPost',
-      'fields.slug': slug,
-      include: 1,
+    this.client = createClient({
+      space: import.meta.env.VITE_CONTENTFUL_SPACE_ID,
+      accessToken: import.meta.env.VITE_CONTENTFUL_ACCESS_TOKEN,
     });
+
+    try {
+      await this.fetchPost();
+    } catch (error) {
+      console.error("Error fetching post:", error);
+      this.error = 'Error';
+    } finally {
+      this.isloading = false;
+    }
   },
 
-  async fetchBlogPost(slug) {
-    return this.client.getEntries({
-      content_type: 'blogPost',
-      'fields.slug': slug,
-      include: 1,
-    });
-  },
+  methods: {
+    async fetchPost() {
+      const slug = this.$route.params.slug;
 
-  async constructPostObject(item) {
-    const heroImageResponse = await this.client.getAsset(item.fields.heroImage.sys.id);
-    const heroImageUrl = `https:${heroImageResponse.fields.file.url}`;
+      // Check cache first
+      if (this.cache[slug]) {
+        this.post = this.cache[slug];
+        return;
+      }
 
-    return {
-      title: item.fields.title,
-      slug: item.fields.slug,
-      description: item.fields.description,
-      publishDate: item.fields.publishDate,
-      richText: item.fields.richText,
-      heroImageUrl,
-    };
-  },
-  formatDate(date) {
+      // Fetch new post data
+      const response = await this.fetchBlogPost(slug);
+      if (!response || response.items.length === 0) {
+        this.error = '404';
+        return;
+      }
+
+      const item = response.items[0];
+      this.post = await this.constructPostObject(item);
+      this.cache[slug] = this.post; // Cache the response
+    },
+
+    async fetchBlogPost(slug) {
+      return this.client.getEntries({
+        content_type: 'blogPost',
+        'fields.slug': slug,
+        include: 1,
+      });
+    },
+
+    async constructPostObject(item) {
+      const heroImageResponse = await this.client.getAsset(item.fields.heroImage.sys.id);
+      const heroImageUrl = `https:${heroImageResponse.fields.file.url}`;
+
+      return {
+        title: item.fields.title,
+        slug: item.fields.slug,
+        description: item.fields.description,
+        publishDate: item.fields.publishDate,
+        richText: item.fields.richText,
+        heroImageUrl,
+      };
+    },
+    formatDate(date) {
       return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
     },
-  toggleDarkMode() {
+    toggleDarkMode() {
       this.isDarkMode = !this.isDarkMode;
     },
-},
+  },
   watch: {
     'post.richText'(richText) {
       this.renderedBody = documentToHtmlString(richText, {
@@ -438,5 +424,4 @@ methods: {
 .error-404 .home-link:hover {
   background-color: #45a049;
 }
-
 </style>
