@@ -23,15 +23,7 @@
                 <div class="post-main">
                   <h4 class="title">{{ posts[0].title }}</h4>
                   <p class="blog-post-description" style="color: #777777">{{ posts[0].description }}</p>
-                  <!-- <div class="line"></div> -->
                 </div>
-                <!-- <div class="post-meta">
-                  <div class="post-info">
-                    <div class="post-info-text">
-                                                              <p class="post-date">{{ formatDate(posts[0].publishDate) }}</p>
-                                                            </div>
-                                                          </div>
-                                                        </div> -->
               </div>
             </div>
           </div>
@@ -49,13 +41,6 @@
                   <p class="blog-post-description" style="color: #777777">{{ post.description }}</p>
                   <div class="line"></div>
                 </div>
-                <!-- <div class="post-meta">
-                  <div class="post-info">
-                    <div class="post-info-text">
-                                                                <p class="post-date">{{ formatDate(post.publishDate) }}</p>
-                                                              </div>
-                                                            </div>
-                                                          </div> -->
               </div>
             </div>
           </div>
