@@ -2,7 +2,7 @@
   <div class="back-button-container">
     <router-link to="/" class="back-button">Back</router-link>
   </div>
-  <div class="dark-mode-buton-container">
+  <div v-if="error !== '404'" class="dark-mode-buton-container">
     <div class="back-button" @click="toggleDarkMode">
       <span v-if="!isDarkMode">☀️ Light</span>
       <span v-else>🌙 Dark</span>
@@ -48,7 +48,7 @@
     <p class="loading-message">{{ randomMessage }}</p>
   </div>
 
-  <div v-else-if="!isloading" class="blog-post" :class="{ 'dark-mode': isDarkMode }"
+  <div v-else-if="!isloading && error !== '404'" class="blog-post" :class="{ 'dark-mode': isDarkMode }"
     :style="{ backgroundColor: isDarkMode ? '#1e1e1e' : '#fff', color: isDarkMode ? '#fff' : '#000' }">
     <h1 class="blog-post-title" :class="{ 'dark-mode': isDarkMode }">{{ post.title }}</h1>
     <div class="blog-post-container" :class="{ 'dark-mode': isDarkMode }">
@@ -62,13 +62,11 @@
       <p class="blog-post-date" :class="{ 'dark-mode': isDarkMode }">{{ formatDate(post.publishDate) }}</p>
     </div>
   </div>
+ 
+  <PageNotFound v-if="error === '404'" />
 
-  <div v-if="error === '404'" class="error-404">
-    <img src="path_to_your_funny_image_or_icon" alt="Funny 404 Image" class="error-image">
-    <h1>404: Page Not Found</h1>
-    <p>It seems we've coded ourselves into a corner. The page you're looking for doesn't exist!</p>
-    <a href="/" class="home-link">Return to the Homepage</a>
-  </div>
+  
+  
 </template>
 
 <script>
@@ -77,11 +75,16 @@ import { documentToHtmlString } from '@contentful/rich-text-html-renderer'
 import { BLOCKS, INLINES } from '@contentful/rich-text-types';
 import '../plugins/gtag.js';
 import { useMeta } from 'vue-meta'
+import PageNotFound from './PageNotFound.vue'
 
 
 
 export default {
   name: 'Singlepost',
+  components: {
+    // Registering child components
+    PageNotFound 
+  },
   setup() {
     useMeta({
       title: 'BlogPost', name: 'description',
@@ -386,42 +389,5 @@ export default {
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   max-height: 600px;
-}
-
-/* 404 */
-
-.error-404 {
-  text-align: center;
-  padding: 50px;
-  color: #333;
-}
-
-.error-404 .error-image {
-  max-width: 300px;
-  margin-bottom: 20px;
-}
-
-.error-404 h1 {
-  font-size: 2.5rem;
-  color: #de4d4d;
-}
-
-.error-404 p {
-  font-size: 1.2rem;
-  margin-bottom: 20px;
-}
-
-.error-404 .home-link {
-  display: inline-block;
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: white;
-  text-decoration: none;
-  border-radius: 5px;
-  transition: background-color 0.3s;
-}
-
-.error-404 .home-link:hover {
-  background-color: #45a049;
 }
 </style>
