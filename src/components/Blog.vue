@@ -13,6 +13,7 @@
         </div>
       </div>
     </div>
+    <PageNotFound v-if="error === '404'" />
     <div v-if="!loading" class="blog-container">
       <div class="blog-post" v-if="posts.length > 0">
         <router-link :to="`/${posts[0].slug}`" class="post-link">
@@ -114,6 +115,8 @@ import { createClient } from "contentful";
 import '../plugins/gtag.js';
 import { RouteLocationNormalized, Router } from "vue-router";
 import { useMeta } from 'vue-meta'
+import PageNotFound from './PageNotFound.vue';
+
 
 const contentfulClient = createClient({
   space: import.meta.env.VITE_CONTENTFUL_SPACE_ID,
@@ -141,6 +144,9 @@ interface Post {
 export default {
 
   name: "Blog",
+  components: {
+    PageNotFound
+  },
   setup() {
     useMeta({
       title: 'Home', name: 'description',
@@ -149,6 +155,7 @@ export default {
   },
   data() {
     return {
+      error: null as string | null,
       loading: true,
       displayedPosts: 10,
       messages: [
@@ -174,26 +181,38 @@ export default {
     },
   },
   async created() {
-    const response = await contentfulClient.getEntries<Post>({
-      content_type: "blogPost",
-    });
+    try {
+      const response = await contentfulClient.getEntries<Post>({
+        content_type: "blogPost",
+      });
 
-    this.posts = await Promise.all(response.items.map(async (item) => {
-      const heroImageId = item.fields.heroImage.sys.id;
-      const heroImageResponse = await contentfulClient.getAsset(heroImageId);
-      const heroImageUrl = `https:${heroImageResponse.fields.file.url}`;
+      if (response.items.length === 0) {
+        // No posts found, set error to '404'
+        this.error = '404';
+        this.loading = false;
+        return;
+      }
 
-      return {
-        title: item.fields.title,
-        slug: item.fields.slug,
-        image: heroImageUrl,
-        description: item.fields.description,
-        publishDate: item.fields.publishDate,
-        heroImage: item.fields.heroImage,
-      };
-    }));
+      this.posts = await Promise.all(response.items.map(async (item) => {
+        const heroImageId = item.fields.heroImage.sys.id;
+        const heroImageResponse = await contentfulClient.getAsset(heroImageId);
+        const heroImageUrl = `https:${heroImageResponse.fields.file.url}`;
 
-    if (this.posts.length) {
+        return {
+          title: item.fields.title,
+          slug: item.fields.slug,
+          image: heroImageUrl,
+          description: item.fields.description,
+          publishDate: item.fields.publishDate,
+          heroImage: item.fields.heroImage,
+        };
+      }));
+
+      this.loading = false;
+    } catch (error) {
+      // Error occurred during data fetch
+      console.error("Error fetching posts:", error);
+      this.error = '404';
       this.loading = false;
     }
   },
