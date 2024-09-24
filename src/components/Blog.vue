@@ -557,6 +557,7 @@ export default {
   color: #4F4F4F;
   background-image: linear-gradient(to right, #ff8a00, #e52e71, #6610f2, #00bfff);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
