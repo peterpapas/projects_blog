@@ -8,7 +8,7 @@
         <div class="rocketship-container">
           <img
             src="https://res.cloudinary.com/dxetyokin/image/upload/f_auto,q_auto/v1682572023/fullstackpeter.com/Header/headerRocketship.png"
-            alt="rocketship image" class="rocketship-image">
+            alt="rocketship" class="rocketship-image">
           <div class="rocketship-shadow"></div>
         </div>
       </div>
@@ -19,7 +19,7 @@
         <router-link :to="`/${posts[0].slug}`" class="post-link">
           <div class="list-card">
             <div class="postFirst">
-              <img :src="getHeroImage(posts[0])" alt="Hero Image" class="post-image-hero" />
+              <img :src="getHeroImage(posts[0])" alt="Hero" class="post-image-hero" />
               <div class="post-body">
                 <div class="post-main">
                   <h4 class="title">{{ posts[0].title }}</h4>
@@ -35,7 +35,7 @@
           @click="navigateToSinglePost(post.slug)">
           <div class="list-card">
             <div class="post">
-              <img :src="getHeroImage(post)" alt="Hero Image" class="post-image" />
+              <img :src="getHeroImage(post)" alt="Hero" class="post-image" />
               <div class="post-body">
                 <div class="post-main">
                   <h4 class="title">{{ post.title }}</h4>
@@ -60,7 +60,7 @@
         </div>
       </div>
       <div class="centered-container">
-        <button class="button-82-pushable" role="button" @click="loadMorePosts()">
+        <button class="button-82-pushable" @click="loadMorePosts()">
           <span class="button-82-shadow"></span>
           <span class="button-82-edge"></span>
           <span class="button-82-front text">
@@ -299,6 +299,7 @@ export default {
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.3);
   overflow: hidden;
   border-radius: 12px;
+  min-height: 450px;
   transition: box-shadow 0.5s cubic-bezier(0.19, 1, 0.22, 1),
     transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
 }
@@ -801,8 +802,3 @@ h2 {
 
 /* Alert End */
 </style>
-
-
-
-
-
