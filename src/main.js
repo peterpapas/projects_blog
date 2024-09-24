@@ -19,5 +19,4 @@ const app = createApp(App);
 
 app.use(router);
 app.use(createMetaManager());
-
 app.mount("#app");
