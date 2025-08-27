@@ -11,8 +11,8 @@
       </ul>
       <button class="theme-toggle" @click="$emit(\'toggle-theme\')">
         <span class="sr-only">Toggle dark mode</span>
-        <span v-if="isDarkMode">☀️</span>
-        <span v-else>🌙</span>
+        <span v-if="isDarkMode">&#9728;</span>
+        <span v-else>&#127769;</span>
       </button>
     </nav>
   </header>
