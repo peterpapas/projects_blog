@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@contentful/rich-text-html-renderer": "^16.0.2",
+    "@netlify/plugin-lighthouse": "^6.0.3",
     "@vitejs/plugin-vue": "^4.2.1",
     "@vue/apollo-option": "^4.0.0-beta.4",
     "@vueuse/head": "^2.0.0",
