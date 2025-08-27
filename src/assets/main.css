@@ -1,0 +1,37 @@
+/* Global styles */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Oxygen, Ubuntu, Cantarell, \"Fira Sans\", \"Droid Sans\", \"Helvetica Neue\", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Light mode default */
+body {
+  background-color: #ffffff;
+  color: #333333;
+}
+
+/* Dark mode styles */
+html.dark body {
+  background-color: #1a202c;
+  color: #f3f4f6;
+}
+
+/* Additional global styles for consistency */
+h1, h2, h3, h4, h5, h6 {
+  color: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Ensure router-link active state is visible */
+.router-link-active {
+  font-weight: bold;
+}
+
+
