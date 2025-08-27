@@ -9,7 +9,7 @@
         <li><RouterLink to="/blog">Blog</RouterLink></li>
         <li><RouterLink to="/about">About</RouterLink></li>
       </ul>
-      <button class="theme-toggle" @click="$emit(\'toggle-theme\')">
+      <button class="theme-toggle" @click="$emit(\"toggle-theme\")">
         <span class="sr-only">Toggle dark mode</span>
         <span v-if="isDarkMode">&#9728;</span>
         <span v-else>&#127769;</span>
