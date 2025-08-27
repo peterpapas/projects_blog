@@ -1,33 +1,113 @@
-<script setup lang="ts">
-import { computed } from 'vue'
-import { useRoute } from 'vue-router'
-
-const route = useRoute()
-const isActive = (name: string) => computed(() => route.name === name)
-</script>
-
 <template>
   <header class="site-header">
     <nav aria-label="Main" role="navigation">
+      <a href="/" class="logo">
+        Peter's Fullstack Corner
+      </a>
       <ul class="nav">
-        <li><RouterLink :aria-current="isActive('home').value ? 'page' : null" :class="{ active: isActive('home').value }" to="/">Home</RouterLink></li>
-        <li><RouterLink :aria-current="isActive('blog-list').value ? 'page' : null" :class="{ active: isActive('blog-list').value }" to="/blog">Blog</RouterLink></li>
-        <li><RouterLink :aria-current="isActive('about').value ? 'page' : null" :class="{ active: isActive('about').value }" to="/about">About</RouterLink></li>
+        <li><RouterLink to="/">Home</RouterLink></li>
+        <li><RouterLink to="/blog">Blog</RouterLink></li>
+        <li><RouterLink to="/about">About</RouterLink></li>
       </ul>
-
-      <!-- Dark mode toggle -->
-      <button class="theme-toggle" @click="document.documentElement.classList.toggle('dark'); localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light')">
-        <span class="sr-only">Toggle dark mode</span>🌓
+      <button class="theme-toggle" @click="toggleTheme">
+        <span class="sr-only">Toggle dark mode</span>
+        <span v-if="isDarkMode">☀️</span>
+        <span v-else>🌙</span>
       </button>
     </nav>
   </header>
 </template>
 
+<script setup>
+import { ref, onMounted } from 'vue';
+
+const isDarkMode = ref(false);
+
+const toggleTheme = () => {
+  isDarkMode.value = !isDarkMode.value;
+  if (isDarkMode.value) {
+    document.documentElement.classList.add('dark');
+    localStorage.setItem('theme', 'dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+    localStorage.setItem('theme', 'light');
+  }
+};
+
+onMounted(() => {
+  if (localStorage.getItem('theme') === 'dark') {
+    isDarkMode.value = true;
+    document.documentElement.classList.add('dark');
+  }
+});
+</script>
+
 <style scoped>
-.site-header { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(8px); }
-.nav { display: flex; gap: 1rem; }
-.active { text-decoration: underline; }
-.theme-toggle { margin-left: auto; }
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(8px);
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.dark .site-header {
+  background-color: rgba(17, 24, 39, 0.8);
+  border-bottom-color: #374151;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: #111827;
+}
+
+.dark .logo {
+  color: #f3f4f6;
+}
+
+.nav {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav a {
+  text-decoration: none;
+  color: #4b5563;
+  font-weight: 500;
+  transition: color 0.2s ease-in-out;
+}
+
+.dark .nav a {
+  color: #d1d5db;
+}
+
+.nav a:hover {
+  color: #111827;
+}
+
+.dark .nav a:hover {
+  color: #f3f4f6;
+}
+
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
 </style>
 
 

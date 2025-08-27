@@ -1,27 +1,20 @@
 <template>
-  <metainfo>
-    <template v-slot:title="{ content }">{{ content ? `${content} | Peter's Full Stack Corner` : `Peter's Full Stack
-      Corner`
-    }}</template>
-  </metainfo>
-  <router-view />
+  <div id="app">
+    <AppHeader />
+    <HeroSection />
+    <main>
+      <router-view />
+    </main>
+  </div>
 </template>
 
-<script>
-import './plugins/gtag';
-import { useMeta } from 'vue-meta'
-
-export default {
-  name: 'App',
-  setup() {
-    useMeta({
-      title: '',
-      htmlAttrs: { lang: 'en', amp: true }
-    })
-  }
-};
+<script setup>
+import AppHeader from './components/layout/AppHeader.vue';
+import HeroSection from './components/HeroSection.vue';
 </script>
 
-<style scoped>
-/* Your scoped styles here */
+<style>
+/* Global styles will be moved to a separate file */
 </style>
+
+
