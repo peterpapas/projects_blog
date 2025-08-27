@@ -5,8 +5,10 @@
       <h2>ALSO KNOWN AS... BLIGGITY-BLOG...🔥🧑‍💻</h2>
       <p>Discover a collection of my fullstack and other projects in one place.</p>
     </div>
-    <div class="hero-image">
-      <img src="/src/assets/rocket.png" alt="Rocket" class="rocket-image" />
+    <div class="rocketship-container">
+      <img src="https://res.cloudinary.com/dxetyokin/image/upload/f_auto,q_auto/v1682572023/fullstackpeter.com/Header/headerRocketship.png"
+           alt="rocketship image" class="rocketship-image" />
+      <div class="rocketship-shadow"></div>
     </div>
   </section>
 </template>
@@ -65,17 +67,45 @@ p {
   color: #ccc;
 }
 
-.hero-image {
-  position: absolute;
-  bottom: -20px; /* Adjust as needed */
-  right: -20px; /* Adjust as needed */
-  opacity: 0.1;
-  z-index: 0;
+.rocketship-container {
+    position: relative;
+    width: 200px;
+    height: 200px;
 }
 
-.rocket-image {
-  width: 300px; /* Adjust size as needed */
-  height: auto;
+.rocketship-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(2px 2px 2px #333);
+    animation: rocketship 2s ease-in-out infinite;
+}
+
+.rocketship-shadow {
+    position: absolute;
+    bottom: -10px;
+    left: 10px;
+    width: 180px;
+    height: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    filter: blur(4px);
+}
+
+@keyframes rocketship {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
 }
 
 @media (min-width: 768px) {

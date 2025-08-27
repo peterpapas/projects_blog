@@ -3,6 +3,8 @@ import App from './App.vue'
 import router from './router'
 import { createHead } from '@vueuse/head'
 
+import './assets/main.css' // Assuming you have a global CSS file here
+
 const app = createApp(App)
 const head = createHead()
 
@@ -15,5 +17,10 @@ router.afterEach((to) => {
 })
 
 app.mount('#app')
+
+// Add dark mode class to body for global styling
+if (localStorage.getItem('theme') === 'dark') {
+  document.documentElement.classList.add('dark');
+}
 
 

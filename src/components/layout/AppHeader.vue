@@ -9,7 +9,7 @@
         <li><RouterLink to="/blog">Blog</RouterLink></li>
         <li><RouterLink to="/about">About</RouterLink></li>
       </ul>
-      <button class="theme-toggle" @click="toggleTheme">
+      <button class="theme-toggle" @click="$emit(\'toggle-theme\')">
         <span class="sr-only">Toggle dark mode</span>
         <span v-if="isDarkMode">☀️</span>
         <span v-else>🌙</span>
@@ -19,26 +19,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { defineEmits } from 'vue';
 
-const isDarkMode = ref(false);
+defineEmits([\'toggle-theme\']);
 
-const toggleTheme = () => {
-  isDarkMode.value = !isDarkMode.value;
-  if (isDarkMode.value) {
-    document.documentElement.classList.add('dark');
-    localStorage.setItem('theme', 'dark');
-  } else {
-    document.documentElement.classList.remove('dark');
-    localStorage.setItem('theme', 'light');
-  }
-};
-
-onMounted(() => {
-  if (localStorage.getItem('theme') === 'dark') {
-    isDarkMode.value = true;
-    document.documentElement.classList.add('dark');
-  }
+const props = defineProps({
+  isDarkMode: Boolean,
 });
 </script>
 
